@@ -1,0 +1,23 @@
+#!/bin/bash
+# gitlab uninstaller for Red Hat
+# 1.0: 2016-06-04: Initial release
+
+# gitlab directories and users to be removed
+DIRECTORIES=(/etc/gitlab /opt/gitlab /var/opt/gitlab /var/log/gitlab)
+USERS=(gitlab-www git)
+
+# stop gitlab services
+sudo gitlab-ctl stop
+
+# remove the package
+sudo yum -y remove gitlab-ce
+
+# remove directories
+for d in ${DIRECTORIES[@]}; do
+	sudo rm -rf "${d}"
+done
+
+# remove users
+for u in ${USERS[@]}; do
+	sudo userdel "${u}"
+done
